@@ -1,6 +1,6 @@
 import React from 'react';
 
-const TasksFilter = () => {
+export default function TasksFilter() {
     return(
         <ul className="filters">
             <li>
@@ -15,5 +15,3 @@ const TasksFilter = () => {
         </ul>
     );
 }
-
-export default TasksFilter;

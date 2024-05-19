@@ -1,7 +1,7 @@
 import React from 'react';
 import Task from '../Task';
 
-const TaskList = ({ data }) => {
+export default function TaskList({ data }) {
     const tasks = data.map(taskData => {
        return <Task {...taskData} key={taskData.id}/>
     });
@@ -12,5 +12,3 @@ const TaskList = ({ data }) => {
         </ul>
     );
 }
-
-export default TaskList;

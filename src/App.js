@@ -3,11 +3,11 @@ import NewTaskForm from './components/NewTaskForm';
 import TaskList from './components/TaskList';
 import Footer from "./components/Footer";
 
-function App() {
+export default function App() {
   const taskData = [
-      { id: 0, itemState: 'completed', description: 'Completed task', creationTime: 'created 17 seconds ago' },
-      { id: 1, itemState: 'editing',   description: 'Editing task',   creationTime: 'created 5 minutes ago' },
-      { id: 2, itemState: null,        description: 'Active task',    creationTime: 'created 5 minutes ago' },
+      { itemState: 'completed', description: 'Completed task', creationTime: 'created 17 seconds ago', id: 0 },
+      { itemState: 'editing',   description: 'Editing task',   creationTime: 'created 5 minutes ago', id: 1 },
+      { itemState: null,        description: 'Active task',    creationTime: 'created 5 minutes ago', id: 2 },
   ];
 
   return (
@@ -20,5 +20,3 @@ function App() {
       </section>
   );
 }
-
-export default App;
