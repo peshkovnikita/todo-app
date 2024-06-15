@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import NewTaskForm from './components/NewTaskForm';
 import TaskList from './components/TaskList';
 import Footer from "./components/Footer";
+import AddButton from "./components/AddButton";
 
 export default class App extends Component {
     state = {
@@ -89,6 +90,7 @@ export default class App extends Component {
         return (
             <>
                 <section className='todoapp'>
+                    <AddButton onItemAdded={ this.addItem }/>
                     <NewTaskForm onItemAdded={ this.addItem }/>
                     <section className='main'>
                         <TaskList
@@ -109,6 +111,9 @@ export default class App extends Component {
                         />
                     </section>
                 </section>
+                <button onClick={ () => console.table(taskData) } className={'btn-add'} type={'button'}>
+                    Check State
+                </button>
             </>
         );
     }
