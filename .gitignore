@@ -13,7 +13,7 @@
 
 # misc
 .idea
-/src/components/AddButton/
+AddButton/
 .DS_Store
 .env.local
 .env.development.local
