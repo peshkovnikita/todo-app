@@ -65,11 +65,11 @@ body {
 	color: rgba(0, 0, 0, 0.4);
 }
 
-.todoapp input::input-placeholder {
-	font-style: italic;
-	font-weight: 300;
-	color: rgba(0, 0, 0, 0.4);
-}
+/*.todoapp input::input-placeholder {*/
+/*	font-style: italic;*/
+/*	font-weight: 300;*/
+/*	color: rgba(0, 0, 0, 0.4);*/
+/*}*/
 
 .todoapp h1 {
 	position: absolute;
@@ -79,8 +79,6 @@ body {
 	font-weight: 200;
 	text-align: center;
 	color: rgba(175, 47, 47, 0.15);
-	-webkit-text-rendering: optimizeLegibility;
-	-moz-text-rendering: optimizeLegibility;
 	text-rendering: optimizeLegibility;
 }
 
@@ -132,7 +130,6 @@ body {
 	position: absolute;
 	top: -52px;
 	left: -13px;
-	-webkit-transform: rotate(90deg);
 	transform: rotate(90deg);
 }
 
@@ -221,7 +218,7 @@ body {
 
 .todo-list li label .created {
 	font-size: 13px;
-	color: gray;
+	color: rgb(128, 128, 128);
 }
 
 .todo-list li label .description {
@@ -289,7 +286,7 @@ body {
 	text-align: center;
 	font-size: 15px;
 	border-top: 1px solid #e6e6e6;
-	color: gray;
+	color: rgb(128, 128, 128);
 }
 
 .footer:before {
