@@ -15,8 +15,11 @@ export default class Task extends Component {
   onSubmit = (e) => {
     e.preventDefault()
     const { id, onToggleEditing, onUpdate } = this.props
-    onToggleEditing()
-    onUpdate(id, this.state.taskText)
+    const { taskText } = this.state
+    if (taskText.trim()) {
+      onToggleEditing()
+      onUpdate(id, taskText)
+    }
   }
 
   render() {
@@ -25,9 +28,10 @@ export default class Task extends Component {
     let stateStyle = `${isEditing ? 'editing' : ''}`
 
     if (isEditing) {
-      editInput = <form onSubmit={this.onSubmit}>
-        <input type='text' className='edit' value={this.state.taskText} onChange={this.onTaskChange} />
-      </form>
+      editInput =
+        <form onSubmit={this.onSubmit}>
+          <input type='text' className='edit' value={this.state.taskText} onChange={this.onTaskChange} autoFocus />
+        </form>
     }
 
     if (isDone) {

@@ -10,13 +10,25 @@ export default class App extends Component {
     filter: 'all',
   }
 
-  addItem = (text) => {
-    const newTask = this.createTask(text)
-    this.setState((prevState) => {
-      const newTaskList = [...prevState.taskData.slice(), newTask]
+  createTask(description) {
+    return {
+      description,
+      isEditing: false,
+      isDone: false,
+      creationTime: Date.now(),
+      id: Date.now() + Number(Math.random().toFixed(4)),
+    }
+  }
 
-      return { taskData: newTaskList }
-    })
+  addItem = (text) => {
+    if (text.trim()) {
+      const newTask = this.createTask(text)
+      this.setState((prevState) => {
+        const newTaskList = [...prevState.taskData.slice(), newTask]
+
+        return { taskData: newTaskList }
+      })
+    }
   }
 
   deleteItem = (id) => {
@@ -35,18 +47,19 @@ export default class App extends Component {
       const newTaskState = { ...taskForEditing, isEditing: !taskForEditing.isEditing }
 
       return { taskData: taskData.toSpliced(index, 1, newTaskState) }
-
     })
   }
 
   onUpdate = (id, text) => {
-    this.setState(({ taskData }) => {
-      const index = taskData.findIndex((item) => item.id === id)
-      const editedTask = taskData[index]
-      const newTaskDesc = { ...editedTask, description: text }
+    if (text.trim()) {
+      this.setState(({ taskData }) => {
+        const index = taskData.findIndex((item) => item.id === id)
+        const editedTask = taskData[index]
+        const newTaskDesc = { ...editedTask, description: text }
 
-      return { taskData: taskData.toSpliced(index, 1, newTaskDesc) }
-    })
+        return { taskData: taskData.toSpliced(index, 1, newTaskDesc) }
+      })
+    }
   }
 
   onToggleDone = (id) => {
@@ -71,15 +84,6 @@ export default class App extends Component {
     })
   }
 
-  createTask(description) {
-    return {
-      description,
-      isEditing: false,
-      isDone: false,
-      creationTime: Date.now(),
-      id: Date.now() + Number(Math.random().toFixed(4)),
-    }
-  }
 
   render() {
     const { taskData, filter } = this.state
