@@ -1,1 +1,1 @@
-App link: https://todo-gpdtepxq6-peshkovnikitas-projects.vercel.app/
+App link: https://todo-app-delta-flax-96.vercel.app/
