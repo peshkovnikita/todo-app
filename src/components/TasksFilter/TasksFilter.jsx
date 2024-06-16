@@ -7,8 +7,9 @@ export default class TasksFilter extends Component {
     }
 
     onFilter = (e) => {
-        let filterState = e.target.getAttribute('value')
+        const filterState = e.target.getAttribute('value')
         this.props.onToggleFilter( filterState )
+
         this.setState({ filter: filterState})
     }
 
@@ -17,8 +18,8 @@ export default class TasksFilter extends Component {
         return(
             <ul className='filters'>
                 <li>
-                    <button type={'button'}
-                            value={'all'}
+                    <button type='button'
+                            value='all'
                             className={ filter === 'all' ? 'selected' : null}
                             onClick={ this.onFilter }>
                         All
@@ -26,8 +27,8 @@ export default class TasksFilter extends Component {
                 </li>
                 <li>
                     <button
-                            type={'button'}
-                            value={'active'}
+                            type='button'
+                            value='active'
                             className={ filter === 'active' ? 'selected' : null}
                             onClick={ this.onFilter }>
                         Active
@@ -35,8 +36,8 @@ export default class TasksFilter extends Component {
                 </li>
                 <li>
                     <button
-                            type={'button'}
-                            value={'completed'}
+                            type='button'
+                            value='completed'
                             className={ filter === 'completed' ? 'selected' : null}
                             onClick={ this.onFilter }>
                         Completed

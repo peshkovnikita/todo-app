@@ -1,8 +1,7 @@
 import React, {Component} from 'react';
-import {formatDistanceToNow} from "date-fns";
+import {formatDistanceToNow} from 'date-fns';
 
 export default class Task extends Component {
-
     state = {
         taskText: this.props.description,
     }
@@ -15,8 +14,9 @@ export default class Task extends Component {
 
     onSubmit = (e) => {
         e.preventDefault();
-        this.props.onToggleEditing()
-        this.props.onUpdate(this.props.id, this.state.taskText);
+        const { id, onToggleEditing, onUpdate } = this.props;
+        onToggleEditing()
+        onUpdate(id, this.state.taskText);
     }
 
     render() {
@@ -26,23 +26,24 @@ export default class Task extends Component {
 
         if(isEditing) {
             editInput = <form  onSubmit={ this.onSubmit }>
-                            <input type="text" className="edit" value={ this.state.taskText } autoFocus onChange={ this.onTaskChange }/>
+                            <input type="text" className="edit" value={ this.state.taskText } onChange={ this.onTaskChange }/>
                         </form>;
         }
+
         if(isDone) {
             stateStyle = 'completed';
         }
 
         return(
-            <li className={ stateStyle ? stateStyle : null } >
-                <div className="view">
-                    <input className="toggle" type="checkbox" onClick={ onToggleDone } defaultChecked={ isDone ? true : false }/>
+            <li className={ stateStyle || null } >
+                <div className='view'>
+                    <input className="toggle" type="checkbox" onClick={ onToggleDone } defaultChecked={ isDone || false }/>
                     <label>
                         <span className="description">{ description }</span>
                         <span className="created">{ formatDistanceToNow(creationTime, {includeSeconds: true, addSuffix: true}) }</span>
                     </label>
-                    <button className="icon icon-edit" onClick={ onToggleEditing }></button>
-                    <button className="icon icon-destroy" onClick={ onDeleted }></button>
+                    <button type='button' className="icon icon-edit" onClick={ onToggleEditing } />
+                    <button type='button' className="icon icon-destroy" onClick={ onDeleted } />
                 </div>
                 { editInput }
             </li>
