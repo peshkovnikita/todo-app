@@ -9,9 +9,6 @@
 # testing
 /coverage
 
-# production
-/build
-
 # misc
 .idea
 /src/components/AddButton/
