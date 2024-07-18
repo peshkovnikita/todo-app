@@ -1,9 +1,13 @@
 import React, { Component } from 'react'
-import { formatDistanceToNow } from 'date-fns'
+// import { formatDistanceToNow } from 'date-fns'
 
 export default class Task extends Component {
   state = {
     taskText: this.props.description,
+    isPlaying: false,
+    seconds: '00',
+    minutes: '00',
+    hours: '00',
   }
 
   onTaskChange = (e) => {
@@ -22,8 +26,41 @@ export default class Task extends Component {
     }
   }
 
+  componentWillUnmount() {
+    clearInterval(this.interval)
+  }
+
+  startTimer = () => {
+    this.interval = setInterval(() => this.tick(), 1000)
+    this.setState(prevState => ({ isPlaying: !prevState.isPlaying }))
+  }
+
+  tick() {
+    this.setState(prevState => {
+      if (prevState.minutes === '59' && prevState.seconds === '59') {
+        return { hours: this.incrementValue(prevState.hours), minutes: '00', seconds: '00' }
+      }
+      if (prevState.seconds === '59') {
+        return { minutes: this.incrementValue(prevState.minutes), seconds: '00' }
+      }
+      return { seconds: this.incrementValue(prevState.seconds) }
+    })
+  }
+
+  incrementValue(str) {
+    const num = Number(str) + 1
+    if (num < 10) return `0${num}`
+    return `${num}`
+  }
+
+  pauseTimer = () => {
+    clearInterval(this.interval)
+    this.setState(prevState => ({ isPlaying: !prevState.isPlaying }))
+  }
+
   render() {
-    const { isEditing, creationTime, description, isDone, onDeleted, onToggleEditing, onToggleDone } = this.props
+    const { isEditing, description, isDone, onDeleted, onToggleEditing, onToggleDone } = this.props
+    const { seconds, minutes, hours } = this.state
     let editInput = null
     let stateStyle = `${isEditing ? 'editing' : ''}`
 
@@ -44,13 +81,20 @@ export default class Task extends Component {
           <input className='toggle' type='checkbox' onClick={onToggleDone} defaultChecked={isDone || false} />
           <label>
             <span className='description'>{description}</span>
-            <span className='created'>{formatDistanceToNow(creationTime, {
-              includeSeconds: true,
-              addSuffix: true,
-            })}</span>
+            <span className='timer'>
+              {hours}:{minutes}:{seconds}
+            </span>
+            {/* <span className='created'>{formatDistanceToNow(creationTime, { */}
+            {/*   includeSeconds: true, */}
+            {/*   addSuffix: true, */}
+            {/* })}</span> */}
           </label>
           <button type='button' className='icon icon-edit' onClick={onToggleEditing} />
           <button type='button' className='icon icon-destroy' onClick={onDeleted} />
+          {this.state.isPlaying ?
+            <button type='button' className='icon icon-pause' onClick={this.pauseTimer} /> :
+            <button type='button' className='icon icon-play' onClick={this.startTimer} />
+          }
         </div>
         {editInput}
       </li>
