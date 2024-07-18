@@ -31,6 +31,7 @@ export default class Task extends Component {
   }
 
   startTimer = () => {
+    if (this.props.isDone) return
     this.interval = setInterval(() => this.tick(), 1000)
     this.setState(prevState => ({ isPlaying: !prevState.isPlaying }))
   }
@@ -53,16 +54,28 @@ export default class Task extends Component {
     return `${num}`
   }
 
+  onTaskDone = () => {
+    this.props.onToggleDone()
+    clearInterval(this.interval)
+    this.setState(prevState => ({
+      isPlaying: !!prevState.isPlaying,
+      seconds: '00',
+      minutes: '00',
+      hours: '00',
+    }))
+  }
+
   pauseTimer = () => {
     clearInterval(this.interval)
     this.setState(prevState => ({ isPlaying: !prevState.isPlaying }))
   }
 
   render() {
-    const { isEditing, description, isDone, onDeleted, onToggleEditing, onToggleDone } = this.props
+    const { isEditing, description, isDone, onDeleted, onToggleEditing } = this.props
     const { seconds, minutes, hours } = this.state
     let editInput = null
     let stateStyle = `${isEditing ? 'editing' : ''}`
+    const doneStyle = isDone ? { color: '#cdcdcd' } : null
 
     if (isEditing) {
       editInput =
@@ -78,10 +91,10 @@ export default class Task extends Component {
     return (
       <li className={stateStyle || null}>
         <div className='view'>
-          <input className='toggle' type='checkbox' onClick={onToggleDone} defaultChecked={isDone || false} />
+          <input className='toggle' type='checkbox' onClick={this.onTaskDone} defaultChecked={isDone || false} />
           <label>
             <span className='description'>{description}</span>
-            <span className='timer'>
+            <span className='timer' style={doneStyle}>
               {hours}:{minutes}:{seconds}
             </span>
             {/* <span className='created'>{formatDistanceToNow(creationTime, { */}
