@@ -1,1 +1,1 @@
-App link: https://todo-app-timer-theta.vercel.app/
+App link: https://todo-app-timer-gold.vercel.app/
