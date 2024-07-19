@@ -17,7 +17,7 @@ export default class App extends Component {
       isDone: false,
       creationTime: Date.now(),
       id: Date.now() + Number(Math.random().toFixed(4)),
-      timer: { h: '00', m: '00', s: '55' },
+      timer: { h: '00', m: '00', s: '00' },
       isPlaying: false,
     }
   }
