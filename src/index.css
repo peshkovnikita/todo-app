@@ -189,6 +189,7 @@ body {
     -webkit-appearance: none;
     appearance: none;
     cursor: pointer;
+    z-index: 100;
 }
 
 .todo-list li .toggle {
@@ -211,17 +212,22 @@ body {
 
 .todo-list li label {
     display: flex;
+    position: relative;
     align-items: center;
     justify-content: space-between;
-    padding: 15px 125px 15px 60px;
+    padding: 15px 120px 15px 60px;
 }
 
 .todo-list li label .created {
-    font-size: 13px;
+    font-size: 10px;
+    position: absolute;
+    right: 17px;
+    bottom: -2px;
     color: rgb(128, 128, 128);
 }
 
 .todo-list li label .timer {
+    font-size: 20px;
     color: #4d4d4d;
 }
 
@@ -242,7 +248,7 @@ body {
 .todo-list li .icon {
     position: absolute;
     top: 0;
-    bottom: -3px;
+    bottom: -2px;
     width: 30px;
     height: 40px;
     font-size: 34px;
@@ -284,6 +290,7 @@ body {
 
 .todo-list li .icon-pause {
     font-size: 24px;
+    bottom: 0 !important;
     font-weight: 900;
     right: 80px;
     transform: scaleY(70%);

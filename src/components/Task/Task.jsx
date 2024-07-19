@@ -1,13 +1,10 @@
 import React, { Component } from 'react'
-// import { formatDistanceToNow } from 'date-fns'
+import { formatDistanceToNow } from 'date-fns'
 
 export default class Task extends Component {
   state = {
     taskText: this.props.description,
-    isPlaying: false,
-    seconds: '00',
-    minutes: '00',
-    hours: '00',
+    isPlaying: this.props.isPlaying,
   }
 
   onTaskChange = (e) => {
@@ -26,56 +23,50 @@ export default class Task extends Component {
     }
   }
 
-  componentWillUnmount() {
-    clearInterval(this.interval)
-  }
-
   startTimer = () => {
     if (this.props.isDone) return
     this.interval = setInterval(() => this.tick(), 1000)
-    this.setState(prevState => ({ isPlaying: !prevState.isPlaying }))
+    this.setState({ isPlaying: true })
+    this.props.onTogglePlaying(this.props.id, this.props.isPlaying)
   }
 
   tick() {
-    this.setState(prevState => {
-      if (prevState.minutes === '59' && prevState.seconds === '59') {
-        return { hours: this.incrementValue(prevState.hours), minutes: '00', seconds: '00' }
-      }
-      if (prevState.seconds === '59') {
-        return { minutes: this.incrementValue(prevState.minutes), seconds: '00' }
-      }
-      return { seconds: this.incrementValue(prevState.seconds) }
-    })
-  }
-
-  incrementValue(str) {
-    const num = Number(str) + 1
-    if (num < 10) return `0${num}`
-    return `${num}`
-  }
-
-  onTaskDone = () => {
-    this.props.onToggleDone()
-    clearInterval(this.interval)
-    this.setState(prevState => ({
-      isPlaying: !!prevState.isPlaying,
-      seconds: '00',
-      minutes: '00',
-      hours: '00',
-    }))
+    const { id, updateTimer } = this.props
+    updateTimer(id)
   }
 
   pauseTimer = () => {
     clearInterval(this.interval)
-    this.setState(prevState => ({ isPlaying: !prevState.isPlaying }))
+    this.setState({ isPlaying: false })
+    this.props.onTogglePlaying(this.props.id, this.props.isPlaying)
+  }
+
+  onTaskDone = () => {
+    this.props.onToggleDone()
+    if (this.props.isPlaying) {
+      clearInterval(this.interval)
+      this.setState({ isPlaying: false })
+      this.props.onTogglePlaying(this.props.id, this.props.isPlaying)
+    }
+  }
+
+  deleteHandler = () => {
+    this.pauseTimer()
+    this.props.onDeleted()
+  }
+
+  onEditing = () => {
+    if (this.props.isDone) return
+    this.props.onToggleEditing()
   }
 
   render() {
-    const { isEditing, description, isDone, onDeleted, onToggleEditing } = this.props
-    const { seconds, minutes, hours } = this.state
+    const { isEditing, description, isDone, creationTime } = this.props
+
+    const { h: hours, m: minutes, s: seconds } = this.props.timer
     let editInput = null
+    let doneStyle = null
     let stateStyle = `${isEditing ? 'editing' : ''}`
-    const doneStyle = isDone ? { color: '#cdcdcd' } : null
 
     if (isEditing) {
       editInput =
@@ -86,6 +77,7 @@ export default class Task extends Component {
 
     if (isDone) {
       stateStyle = 'completed'
+      doneStyle = { color: '#cdcdcd' }
     }
 
     return (
@@ -97,16 +89,16 @@ export default class Task extends Component {
             <span className='timer' style={doneStyle}>
               {hours}:{minutes}:{seconds}
             </span>
-            {/* <span className='created'>{formatDistanceToNow(creationTime, { */}
-            {/*   includeSeconds: true, */}
-            {/*   addSuffix: true, */}
-            {/* })}</span> */}
+            <span className='created'>{formatDistanceToNow(creationTime, {
+              includeSeconds: true,
+              addSuffix: true,
+            })}</span>
           </label>
-          <button type='button' className='icon icon-edit' onClick={onToggleEditing} />
-          <button type='button' className='icon icon-destroy' onClick={onDeleted} />
+          <button type='button' className='icon icon-edit' onClick={this.onEditing} style={doneStyle} />
+          <button type='button' className='icon icon-destroy' onClick={this.deleteHandler} />
           {this.state.isPlaying ?
-            <button type='button' className='icon icon-pause' onClick={this.pauseTimer} /> :
-            <button type='button' className='icon icon-play' onClick={this.startTimer} />
+            <button type='button' className='icon icon-pause' onClick={this.pauseTimer} style={doneStyle} /> :
+            <button type='button' className='icon icon-play' onClick={this.startTimer} style={doneStyle} />
           }
         </div>
         {editInput}
