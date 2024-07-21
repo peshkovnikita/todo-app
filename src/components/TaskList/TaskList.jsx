@@ -7,8 +7,7 @@ export default function TaskList({
   onDeleted,
   onToggleDone,
   onUpdate,
-  onUpdateTimer,
-  onTogglePlaying,
+  onUpdateTimer
 }) {
   const tasks = data.map(taskData => <Task
     {...taskData}
@@ -16,7 +15,6 @@ export default function TaskList({
     onDeleted={() => onDeleted(taskData.id)}
     onToggleEditing={() => onToggleEditing(taskData.id)}
     onToggleDone={() => onToggleDone(taskData.id)}
-    onTogglePlaying={() => onTogglePlaying(taskData.id, taskData.isPlaying)}
     onUpdate={onUpdate}
     updateTimer={onUpdateTimer}
   />)

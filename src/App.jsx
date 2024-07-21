@@ -17,8 +17,6 @@ export default class App extends Component {
       isDone: false,
       creationTime: Date.now(),
       id: Date.now() + Number(Math.random().toFixed(4)),
-      timer: { h: '00', m: '00', s: '00' },
-      isPlaying: false,
     }
   }
 
@@ -50,32 +48,6 @@ export default class App extends Component {
 
       return { taskData: taskData.toSpliced(index, 1, newTaskState) }
     })
-  }
-
-  onUpdateTimer = (id) => {
-    this.setState(({ taskData }) => {
-      const index = taskData.findIndex((item) => item.id === id)
-      const timerTask = taskData[index]
-      const { h: hours, m: minutes, s: seconds } = timerTask.timer
-
-      if (minutes === '59' && seconds === '59') {
-        const newTimer = { ...timerTask, timer: { h: this.incrementValue(hours), m: '00', s: '00' } }
-        return { taskData: taskData.toSpliced(index, 1, newTimer) }
-      }
-      if (seconds === '59') {
-        const newTimer = { ...timerTask, timer: { h: hours, m: this.incrementValue(minutes), s: '00' } }
-        return { taskData: taskData.toSpliced(index, 1, newTimer) }
-      }
-      const newTimer = { ...timerTask, timer: { h: hours, m: minutes, s: this.incrementValue(seconds) } }
-      return { taskData: taskData.toSpliced(index, 1, newTimer) }
-    })
-    console.log('tick')
-  }
-
-  incrementValue(str) {
-    const num = Number(str) + 1
-    if (num < 10) return `0${num}`
-    return `${num}`
   }
 
   onUpdate = (id, text) => {
@@ -130,29 +102,28 @@ export default class App extends Component {
     const tasksLeft = taskData.length - completedTasks.length
 
     return (
-      <section className='todoapp'>
-        <NewTaskForm onItemAdded={this.addItem} />
-        <section className='main'>
-          <TaskList
-            data={filter === 'all' ? taskData :
-              filter === 'active' ? activeTasks : completedTasks
-            }
-            onToggleEditing={this.onToggleEditing}
-            onToggleDone={this.onToggleDone}
-            onDeleted={this.deleteItem}
-            onUpdate={this.onUpdate}
-            onUpdateTimer={this.onUpdateTimer}
-            onTogglePlaying={this.onTogglePlaying}
-          />
-          <Footer
-            data={taskData}
-            tasksToDo={tasksLeft}
-            filterState={filter}
-            onToggleFilter={this.onToggleFilter}
-            onClearCompleted={this.clearAllCompleted}
-          />
+        <section className='todoapp'>
+          <NewTaskForm onItemAdded={this.addItem} />
+          <section className='main'>
+            <TaskList
+                data={filter === 'all' ? taskData :
+                    filter === 'active' ? activeTasks : completedTasks
+                }
+                onToggleEditing={this.onToggleEditing}
+                onToggleDone={this.onToggleDone}
+                onDeleted={this.deleteItem}
+                onUpdate={this.onUpdate}
+                onTogglePlaying={this.onTogglePlaying}
+            />
+            <Footer
+                data={taskData}
+                tasksToDo={tasksLeft}
+                filterState={filter}
+                onToggleFilter={this.onToggleFilter}
+                onClearCompleted={this.clearAllCompleted}
+            />
+          </section>
         </section>
-      </section>
     )
   }
 }
