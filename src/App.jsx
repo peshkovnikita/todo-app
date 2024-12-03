@@ -72,6 +72,16 @@ export default class App extends Component {
     })
   }
 
+  onTogglePlaying = (id, bool) => {
+    this.setState(({ taskData }) => {
+      const index = taskData.findIndex((item) => item.id === id)
+      const oldTask = taskData[index]
+      const newTask = { ...oldTask, isPlaying: !bool }
+
+      return { taskData: taskData.toSpliced(index, 1, newTask) }
+    })
+  }
+
   onToggleFilter = (filterState) => {
     this.setState({ filter: filterState })
   }
@@ -92,27 +102,28 @@ export default class App extends Component {
     const tasksLeft = taskData.length - completedTasks.length
 
     return (
-      <section className='todoapp'>
-        <NewTaskForm onItemAdded={this.addItem} />
-        <section className='main'>
-          <TaskList
-            data={filter === 'all' ? taskData :
-              filter === 'active' ? activeTasks : completedTasks
-            }
-            onToggleEditing={this.onToggleEditing}
-            onToggleDone={this.onToggleDone}
-            onDeleted={this.deleteItem}
-            onUpdate={this.onUpdate}
-          />
-          <Footer
-            data={taskData}
-            tasksToDo={tasksLeft}
-            filterState={filter}
-            onToggleFilter={this.onToggleFilter}
-            onClearCompleted={this.clearAllCompleted}
-          />
+        <section className='todoapp'>
+          <NewTaskForm onItemAdded={this.addItem} />
+          <section className='main'>
+            <TaskList
+                data={filter === 'all' ? taskData :
+                    filter === 'active' ? activeTasks : completedTasks
+                }
+                onToggleEditing={this.onToggleEditing}
+                onToggleDone={this.onToggleDone}
+                onDeleted={this.deleteItem}
+                onUpdate={this.onUpdate}
+                onTogglePlaying={this.onTogglePlaying}
+            />
+            <Footer
+                data={taskData}
+                tasksToDo={tasksLeft}
+                filterState={filter}
+                onToggleFilter={this.onToggleFilter}
+                onClearCompleted={this.clearAllCompleted}
+            />
+          </section>
         </section>
-      </section>
     )
   }
 }

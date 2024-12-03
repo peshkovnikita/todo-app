@@ -23,7 +23,7 @@ export default class NewTaskForm extends Component {
     return (
       <header className='header'>
         <h1>todos</h1>
-        <form action='' onSubmit={this.onSubmitTask}>
+        <form action='' onSubmit={this.onSubmitTask} className='new-todo-form'>
           <input type='text'
                  autoFocus
                  className='new-todo'

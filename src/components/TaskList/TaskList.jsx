@@ -1,7 +1,14 @@
 import React from 'react'
 import Task from '../Task'
 
-export default function TaskList({ data, onToggleEditing, onDeleted, onToggleDone, onUpdate }) {
+export default function TaskList({
+  data,
+  onToggleEditing,
+  onDeleted,
+  onToggleDone,
+  onUpdate,
+  onUpdateTimer
+}) {
   const tasks = data.map(taskData => <Task
     {...taskData}
     key={taskData.id}
@@ -9,6 +16,7 @@ export default function TaskList({ data, onToggleEditing, onDeleted, onToggleDon
     onToggleEditing={() => onToggleEditing(taskData.id)}
     onToggleDone={() => onToggleDone(taskData.id)}
     onUpdate={onUpdate}
+    updateTimer={onUpdateTimer}
   />)
 
   return (
